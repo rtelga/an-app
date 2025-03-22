@@ -80,11 +80,20 @@ def second_colorbar(pollutant: str, value: float) -> TypeVar('matplotlib.figure.
     
     f, ax = mpl.pyplot.subplots()
     ax.set_axis_off()
-    value_above_limit = values > 1.7 * INFO_POLLUTANTS[pollutant]["guideline"]
-    if value_above_limit:
+    x = value / INFO_POLLUTANTS[pollutant]["guideline"]
+    if x > 1.7:
         cmap = mpl.colors.LineraSegmentedColormap.from_list(
             "y",
-            list(zip[0.0,(15*x)/(value*3), (15*x)/(value*2), (15*x)/value, value])
+            list(zip(
+                [
+                    0.0,
+                    (15*x)/(value*3),
+                    (15*x)/(value*2),
+                    (15*x)/value,
+                    value
+                ],
+                colors
+            ))
         )
         sm = mpl.cm.ScalarMappable(
             cmap=cmap,
